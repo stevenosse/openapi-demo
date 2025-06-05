@@ -1,0 +1,5 @@
+additionalProperties:
+  pubName: api_client
+  pubVersion: 1.0.0
+  pubDescription: "API Client for Todo mobile app"
+  
