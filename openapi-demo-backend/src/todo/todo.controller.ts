@@ -22,7 +22,7 @@ export class TodoController {
   constructor(private readonly todoService: TodoService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Create a new todo' })
+  @ApiOperation({ summary: 'Create a new todo', operationId: 'createTodo' })
   @ApiCreatedResponse({
     description: 'The todo has been successfully created.',
     type: Todo,
@@ -32,7 +32,7 @@ export class TodoController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Get all todos' })
+  @ApiOperation({ summary: 'Get all todos', operationId: 'getAllTodos' })
   @ApiOkResponse({
     description: 'List of all todos',
     type: [Todo],
@@ -42,7 +42,7 @@ export class TodoController {
   }
 
   @Get(':id')
-  @ApiOperation({ summary: 'Get a todo by ID' })
+  @ApiOperation({ summary: 'Get a todo by ID', operationId: 'getTodoById' })
   @ApiParam({ name: 'id', description: 'Todo ID', type: 'number' })
   @ApiOkResponse({
     description: 'The todo with the specified ID',
@@ -54,7 +54,7 @@ export class TodoController {
   }
 
   @Patch(':id')
-  @ApiOperation({ summary: 'Update a todo by ID' })
+  @ApiOperation({ summary: 'Update a todo by ID', operationId: 'updateTodoById' })
   @ApiParam({ name: 'id', description: 'Todo ID', type: 'number' })
   @ApiOkResponse({
     description: 'The todo has been successfully updated.',
@@ -70,7 +70,7 @@ export class TodoController {
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  @ApiOperation({ summary: 'Delete a todo by ID' })
+  @ApiOperation({ summary: 'Delete a todo by ID', operationId: 'deleteTodoById' })
   @ApiParam({ name: 'id', description: 'Todo ID', type: 'number' })
   @ApiNoContentResponse({ description: 'The todo has been successfully deleted.' })
   @ApiNotFoundResponse({ description: 'Todo not found' })
