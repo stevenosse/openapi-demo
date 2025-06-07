@@ -3,7 +3,7 @@
 # This script generates client code from the OpenAPI specification
 
 # Set variables
-BACKEND_URL="http://localhost:3000/api-json"
+BACKEND_URL="http://localhost:3000/api-docs-json"
 OUTPUT_DIR="../openapi-demo-frontend/packages/api_client"
 MOBILE_CONFIG_FILE="../openapi-demo-frontend/openapi.yaml"
 
