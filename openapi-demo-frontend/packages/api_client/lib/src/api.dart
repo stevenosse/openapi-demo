@@ -9,6 +9,7 @@ import 'package:api_client/src/auth/api_key_auth.dart';
 import 'package:api_client/src/auth/basic_auth.dart';
 import 'package:api_client/src/auth/bearer_auth.dart';
 import 'package:api_client/src/auth/oauth.dart';
+import 'package:api_client/src/api/tasks_api.dart';
 import 'package:api_client/src/api/todos_api.dart';
 
 class ApiClient {
@@ -63,6 +64,12 @@ class ApiClient {
     if (this.dio.interceptors.any((i) => i is ApiKeyAuthInterceptor)) {
       (this.dio.interceptors.firstWhere((element) => element is ApiKeyAuthInterceptor) as ApiKeyAuthInterceptor).apiKeys[name] = apiKey;
     }
+  }
+
+  /// Get TasksApi instance, base route and serializer can be overridden by a given but be careful,
+  /// by doing that all interceptors will not be executed
+  TasksApi getTasksApi() {
+    return TasksApi(dio, serializers);
   }
 
   /// Get TodosApi instance, base route and serializer can be overridden by a given but be careful,

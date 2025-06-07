@@ -10,9 +10,13 @@ export 'package:api_client/src/auth/oauth.dart';
 export 'package:api_client/src/serializers.dart';
 export 'package:api_client/src/model/date.dart';
 
+export 'package:api_client/src/api/tasks_api.dart';
 export 'package:api_client/src/api/todos_api.dart';
 
+export 'package:api_client/src/model/create_task_dto.dart';
 export 'package:api_client/src/model/create_todo_dto.dart';
+export 'package:api_client/src/model/task.dart';
 export 'package:api_client/src/model/todo.dart';
+export 'package:api_client/src/model/update_task_dto.dart';
 export 'package:api_client/src/model/update_todo_dto.dart';
 

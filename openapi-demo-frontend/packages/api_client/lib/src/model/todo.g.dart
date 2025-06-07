@@ -80,6 +80,8 @@ class _$Todo extends Todo {
   final DateTime createdAt;
   @override
   final DateTime updatedAt;
+  @override
+  final BuiltList<Task>? tasks;
 
   factory _$Todo([void Function(TodoBuilder)? updates]) =>
       (TodoBuilder()..update(updates))._build();
@@ -91,7 +93,8 @@ class _$Todo extends Todo {
       required this.completed,
       required this.priority,
       required this.createdAt,
-      required this.updatedAt})
+      required this.updatedAt,
+      this.tasks})
       : super._();
   @override
   Todo rebuild(void Function(TodoBuilder) updates) =>
@@ -110,7 +113,8 @@ class _$Todo extends Todo {
         completed == other.completed &&
         priority == other.priority &&
         createdAt == other.createdAt &&
-        updatedAt == other.updatedAt;
+        updatedAt == other.updatedAt &&
+        tasks == other.tasks;
   }
 
   @override
@@ -123,6 +127,7 @@ class _$Todo extends Todo {
     _$hash = $jc(_$hash, priority.hashCode);
     _$hash = $jc(_$hash, createdAt.hashCode);
     _$hash = $jc(_$hash, updatedAt.hashCode);
+    _$hash = $jc(_$hash, tasks.hashCode);
     _$hash = $jf(_$hash);
     return _$hash;
   }
@@ -136,7 +141,8 @@ class _$Todo extends Todo {
           ..add('completed', completed)
           ..add('priority', priority)
           ..add('createdAt', createdAt)
-          ..add('updatedAt', updatedAt))
+          ..add('updatedAt', updatedAt)
+          ..add('tasks', tasks))
         .toString();
   }
 }
@@ -172,6 +178,10 @@ class TodoBuilder implements Builder<Todo, TodoBuilder> {
   DateTime? get updatedAt => _$this._updatedAt;
   set updatedAt(DateTime? updatedAt) => _$this._updatedAt = updatedAt;
 
+  ListBuilder<Task>? _tasks;
+  ListBuilder<Task> get tasks => _$this._tasks ??= ListBuilder<Task>();
+  set tasks(ListBuilder<Task>? tasks) => _$this._tasks = tasks;
+
   TodoBuilder() {
     Todo._defaults(this);
   }
@@ -186,6 +196,7 @@ class TodoBuilder implements Builder<Todo, TodoBuilder> {
       _priority = $v.priority;
       _createdAt = $v.createdAt;
       _updatedAt = $v.updatedAt;
+      _tasks = $v.tasks?.toBuilder();
       _$v = null;
     }
     return this;
@@ -205,20 +216,34 @@ class TodoBuilder implements Builder<Todo, TodoBuilder> {
   Todo build() => _build();
 
   _$Todo _build() {
-    final _$result = _$v ??
-        _$Todo._(
-          id: BuiltValueNullFieldError.checkNotNull(id, r'Todo', 'id'),
-          title: BuiltValueNullFieldError.checkNotNull(title, r'Todo', 'title'),
-          description: description,
-          completed: BuiltValueNullFieldError.checkNotNull(
-              completed, r'Todo', 'completed'),
-          priority: BuiltValueNullFieldError.checkNotNull(
-              priority, r'Todo', 'priority'),
-          createdAt: BuiltValueNullFieldError.checkNotNull(
-              createdAt, r'Todo', 'createdAt'),
-          updatedAt: BuiltValueNullFieldError.checkNotNull(
-              updatedAt, r'Todo', 'updatedAt'),
-        );
+    _$Todo _$result;
+    try {
+      _$result = _$v ??
+          _$Todo._(
+            id: BuiltValueNullFieldError.checkNotNull(id, r'Todo', 'id'),
+            title:
+                BuiltValueNullFieldError.checkNotNull(title, r'Todo', 'title'),
+            description: description,
+            completed: BuiltValueNullFieldError.checkNotNull(
+                completed, r'Todo', 'completed'),
+            priority: BuiltValueNullFieldError.checkNotNull(
+                priority, r'Todo', 'priority'),
+            createdAt: BuiltValueNullFieldError.checkNotNull(
+                createdAt, r'Todo', 'createdAt'),
+            updatedAt: BuiltValueNullFieldError.checkNotNull(
+                updatedAt, r'Todo', 'updatedAt'),
+            tasks: _tasks?.build(),
+          );
+    } catch (_) {
+      late String _$failedField;
+      try {
+        _$failedField = 'tasks';
+        _tasks?.build();
+      } catch (e) {
+        throw BuiltValueNestedFieldError(r'Todo', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }

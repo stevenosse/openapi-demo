@@ -34,7 +34,16 @@ export class TodoService {
    * @returns Array of all todos
    */
   async findAll(): Promise<Todo[]> {
-    return this.todoRepository.find();
+    return this.todoRepository.find({
+      relations: ['tasks'],
+      order: {
+        createdAt: 'DESC',
+        tasks: {
+          order: 'ASC',
+          createdAt: 'ASC'
+        }
+      }
+    });
   }
 
   /**
@@ -44,7 +53,16 @@ export class TodoService {
    * @throws NotFoundException if todo is not found
    */
   async findOne(id: number): Promise<Todo> {
-    const todo = await this.todoRepository.findOne({ where: { id } });
+    const todo = await this.todoRepository.findOne({ 
+      where: { id },
+      relations: ['tasks'],
+      order: {
+        tasks: {
+          order: 'ASC',
+          createdAt: 'ASC'
+        }
+      }
+    });
     if (!todo) {
       throw new NotFoundException(`Todo with ID ${id} not found`);
     }

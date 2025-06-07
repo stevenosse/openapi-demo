@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TodoModule } from './todo/todo.module';
 import { Todo } from './todo/entities/todo.entity';
+import { Task } from './todo/entities/task.entity';
 import { join } from 'path';
 
 @Module({
@@ -9,7 +10,7 @@ import { join } from 'path';
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: join(process.cwd(), 'data', 'todos.sqlite'),
-      entities: [Todo],
+      entities: [Todo, Task],
       synchronize: true, // Auto-create database schema (only for development)
       autoLoadEntities: true,
     }),

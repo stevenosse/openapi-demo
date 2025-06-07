@@ -35,7 +35,7 @@ openapi-generator-cli generate \
   -i "$BACKEND_URL" \
   -g dart-dio \
   -o "$OUTPUT_DIR" \
-   -c "$MOBILE_CONFIG_FILE" 
+  -c "$MOBILE_CONFIG_FILE" 
 
 echo "Running build_runner in mobile client directory..."
 cd "$OUTPUT_DIR" && fvm flutter pub get && fvm dart run build_runner build --delete-conflicting-outputs

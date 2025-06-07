@@ -14,18 +14,28 @@ import 'package:built_value/iso_8601_date_time_serializer.dart';
 import 'package:api_client/src/date_serializer.dart';
 import 'package:api_client/src/model/date.dart';
 
+import 'package:api_client/src/model/create_task_dto.dart';
 import 'package:api_client/src/model/create_todo_dto.dart';
+import 'package:api_client/src/model/task.dart';
 import 'package:api_client/src/model/todo.dart';
+import 'package:api_client/src/model/update_task_dto.dart';
 import 'package:api_client/src/model/update_todo_dto.dart';
 
 part 'serializers.g.dart';
 
 @SerializersFor([
+  CreateTaskDto,
   CreateTodoDto,
+  Task,
   Todo,
+  UpdateTaskDto,
   UpdateTodoDto,
 ])
 Serializers serializers = (_$serializers.toBuilder()
+      ..addBuilderFactory(
+        const FullType(BuiltList, [FullType(Task)]),
+        () => ListBuilder<Task>(),
+      )
       ..addBuilderFactory(
         const FullType(BuiltList, [FullType(Todo)]),
         () => ListBuilder<Todo>(),

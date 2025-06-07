@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, OneToMany } from 'typeorm';
+import { Task } from './task.entity';
 
 @Entity('todos')
 export class Todo {
@@ -51,8 +52,16 @@ export class Todo {
 
   @ApiProperty({
     description: 'The last update date of the todo',
-    example: '2023-12-01T10:00:00Z',
+    example: '2023-12-01T10:30:00Z',
   })
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @ApiProperty({
+    description: 'The tasks belonging to this todo',
+    type: () => [Task],
+    required: false,
+  })
+  @OneToMany(() => Task, task => task.todo, { cascade: true })
+  tasks?: Task[];
 }

@@ -3,82 +3,85 @@
 //
 
 // ignore_for_file: unused_element
-import 'package:api_client/src/model/task.dart';
-import 'package:built_collection/built_collection.dart';
+import 'package:api_client/src/model/todo.dart';
 import 'package:built_value/built_value.dart';
 import 'package:built_value/serializer.dart';
 
-part 'todo.g.dart';
+part 'task.g.dart';
 
-/// Todo
+/// Task
 ///
 /// Properties:
-/// * [id] - The unique identifier of the todo
-/// * [title] - The title of the todo
-/// * [description] - The description of the todo
-/// * [completed] - Whether the todo is completed
-/// * [priority] - The priority level of the todo
-/// * [createdAt] - The creation date of the todo
-/// * [updatedAt] - The last update date of the todo
-/// * [tasks] - The tasks belonging to this todo
+/// * [id] - The unique identifier of the task
+/// * [title] - The title of the task
+/// * [description] - The description of the task
+/// * [completed] - Whether the task is completed
+/// * [order] - The order/position of the task within the todo
+/// * [todoId] - The ID of the todo this task belongs to
+/// * [todo] - The todo this task belongs to
+/// * [createdAt] - The creation date of the task
+/// * [updatedAt] - The last update date of the task
 @BuiltValue()
-abstract class Todo implements Built<Todo, TodoBuilder> {
-  /// The unique identifier of the todo
+abstract class Task implements Built<Task, TaskBuilder> {
+  /// The unique identifier of the task
   @BuiltValueField(wireName: r'id')
   num get id;
 
-  /// The title of the todo
+  /// The title of the task
   @BuiltValueField(wireName: r'title')
   String get title;
 
-  /// The description of the todo
+  /// The description of the task
   @BuiltValueField(wireName: r'description')
   String? get description;
 
-  /// Whether the todo is completed
+  /// Whether the task is completed
   @BuiltValueField(wireName: r'completed')
   bool get completed;
 
-  /// The priority level of the todo
-  @BuiltValueField(wireName: r'priority')
-  TodoPriorityEnum get priority;
-  // enum priorityEnum {  low,  medium,  high,  };
+  /// The order/position of the task within the todo
+  @BuiltValueField(wireName: r'order')
+  num get order;
 
-  /// The creation date of the todo
+  /// The ID of the todo this task belongs to
+  @BuiltValueField(wireName: r'todoId')
+  num get todoId;
+
+  /// The todo this task belongs to
+  @BuiltValueField(wireName: r'todo')
+  Todo get todo;
+
+  /// The creation date of the task
   @BuiltValueField(wireName: r'createdAt')
   DateTime get createdAt;
 
-  /// The last update date of the todo
+  /// The last update date of the task
   @BuiltValueField(wireName: r'updatedAt')
   DateTime get updatedAt;
 
-  /// The tasks belonging to this todo
-  @BuiltValueField(wireName: r'tasks')
-  BuiltList<Task>? get tasks;
+  Task._();
 
-  Todo._();
-
-  factory Todo([void updates(TodoBuilder b)]) = _$Todo;
+  factory Task([void updates(TaskBuilder b)]) = _$Task;
 
   @BuiltValueHook(initializeBuilder: true)
-  static void _defaults(TodoBuilder b) => b
+  static void _defaults(TaskBuilder b) => b
       ..completed = false
-      ..priority = const TodoPriorityEnum._('medium');
+      ..order = 0;
 
   @BuiltValueSerializer(custom: true)
-  static Serializer<Todo> get serializer => _$TodoSerializer();
+  static Serializer<Task> get serializer => _$TaskSerializer();
 }
 
-class _$TodoSerializer implements PrimitiveSerializer<Todo> {
+class _$TaskSerializer implements PrimitiveSerializer<Task> {
   @override
-  final Iterable<Type> types = const [Todo, _$Todo];
+  final Iterable<Type> types = const [Task, _$Task];
 
   @override
-  final String wireName = r'Todo';
+  final String wireName = r'Task';
 
   Iterable<Object?> _serializeProperties(
     Serializers serializers,
-    Todo object, {
+    Task object, {
     FullType specifiedType = FullType.unspecified,
   }) sync* {
     yield r'id';
@@ -103,10 +106,20 @@ class _$TodoSerializer implements PrimitiveSerializer<Todo> {
       object.completed,
       specifiedType: const FullType(bool),
     );
-    yield r'priority';
+    yield r'order';
     yield serializers.serialize(
-      object.priority,
-      specifiedType: const FullType(TodoPriorityEnum),
+      object.order,
+      specifiedType: const FullType(num),
+    );
+    yield r'todoId';
+    yield serializers.serialize(
+      object.todoId,
+      specifiedType: const FullType(num),
+    );
+    yield r'todo';
+    yield serializers.serialize(
+      object.todo,
+      specifiedType: const FullType(Todo),
     );
     yield r'createdAt';
     yield serializers.serialize(
@@ -118,19 +131,12 @@ class _$TodoSerializer implements PrimitiveSerializer<Todo> {
       object.updatedAt,
       specifiedType: const FullType(DateTime),
     );
-    if (object.tasks != null) {
-      yield r'tasks';
-      yield serializers.serialize(
-        object.tasks,
-        specifiedType: const FullType(BuiltList, [FullType(Task)]),
-      );
-    }
   }
 
   @override
   Object serialize(
     Serializers serializers,
-    Todo object, {
+    Task object, {
     FullType specifiedType = FullType.unspecified,
   }) {
     return _serializeProperties(serializers, object, specifiedType: specifiedType).toList();
@@ -141,7 +147,7 @@ class _$TodoSerializer implements PrimitiveSerializer<Todo> {
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
     required List<Object?> serializedList,
-    required TodoBuilder result,
+    required TaskBuilder result,
     required List<Object?> unhandled,
   }) {
     for (var i = 0; i < serializedList.length; i += 2) {
@@ -176,12 +182,26 @@ class _$TodoSerializer implements PrimitiveSerializer<Todo> {
           ) as bool;
           result.completed = valueDes;
           break;
-        case r'priority':
+        case r'order':
           final valueDes = serializers.deserialize(
             value,
-            specifiedType: const FullType(TodoPriorityEnum),
-          ) as TodoPriorityEnum;
-          result.priority = valueDes;
+            specifiedType: const FullType(num),
+          ) as num;
+          result.order = valueDes;
+          break;
+        case r'todoId':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(num),
+          ) as num;
+          result.todoId = valueDes;
+          break;
+        case r'todo':
+          final valueDes = serializers.deserialize(
+            value,
+            specifiedType: const FullType(Todo),
+          ) as Todo;
+          result.todo.replace(valueDes);
           break;
         case r'createdAt':
           final valueDes = serializers.deserialize(
@@ -197,13 +217,6 @@ class _$TodoSerializer implements PrimitiveSerializer<Todo> {
           ) as DateTime;
           result.updatedAt = valueDes;
           break;
-        case r'tasks':
-          final valueDes = serializers.deserialize(
-            value,
-            specifiedType: const FullType(BuiltList, [FullType(Task)]),
-          ) as BuiltList<Task>;
-          result.tasks.replace(valueDes);
-          break;
         default:
           unhandled.add(key);
           unhandled.add(value);
@@ -213,12 +226,12 @@ class _$TodoSerializer implements PrimitiveSerializer<Todo> {
   }
 
   @override
-  Todo deserialize(
+  Task deserialize(
     Serializers serializers,
     Object serialized, {
     FullType specifiedType = FullType.unspecified,
   }) {
-    final result = TodoBuilder();
+    final result = TaskBuilder();
     final serializedList = (serialized as Iterable<Object?>).toList();
     final unhandled = <Object?>[];
     _deserializeProperties(
@@ -231,25 +244,5 @@ class _$TodoSerializer implements PrimitiveSerializer<Todo> {
     );
     return result.build();
   }
-}
-
-class TodoPriorityEnum extends EnumClass {
-
-  /// The priority level of the todo
-  @BuiltValueEnumConst(wireName: r'low')
-  static const TodoPriorityEnum low = _$todoPriorityEnum_low;
-  /// The priority level of the todo
-  @BuiltValueEnumConst(wireName: r'medium')
-  static const TodoPriorityEnum medium = _$todoPriorityEnum_medium;
-  /// The priority level of the todo
-  @BuiltValueEnumConst(wireName: r'high')
-  static const TodoPriorityEnum high = _$todoPriorityEnum_high;
-
-  static Serializer<TodoPriorityEnum> get serializer => _$todoPriorityEnumSerializer;
-
-  const TodoPriorityEnum._(String name): super(name);
-
-  static BuiltSet<TodoPriorityEnum> get values => _$todoPriorityEnumValues;
-  static TodoPriorityEnum valueOf(String name) => _$todoPriorityEnumValueOf(name);
 }
 
